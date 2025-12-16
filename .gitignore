@@ -1,0 +1,16 @@
+# Project
+/target
+.rust-analyzer/
+.env
+
+# Editors folders
+/.idea
+/.vscode
+/.zed
+*.bak
+*.swp
+*.swo
+
+# OS specific
+.DS_Store
+Thumbs.db
