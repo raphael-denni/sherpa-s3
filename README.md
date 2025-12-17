@@ -3,9 +3,13 @@
 *Through the wilderness of object storage, Sherpa S3 will be your guide.*
 
 > [!WARNING]
-> ⚠️ This project is still in early development. Features may be incomplete or unstable. Installation methods and documentation are also a work in progress.
+> This project is still in early development. Features may be incomplete or unstable. Installation methods and documentation are also a work in progress.
 
 Using CLI tools for S3-compatible storage can be very hard to use, especially for newcomers. Sherpa S3 aims to provide a friendly and easy-to-use TUI (Text User Interface) and CLI (Command Line Interface) for managing these storage services. It aims to be compatible with services like Amazon S3, Backblaze B2 and others. 
+
+**Source Repositories:**
+- Main: [Codeberg](https://codeberg.org/raphael-denni/sherpa-s3)
+- Mirror: [GitHub](https://github.com/raphael-denni/sherpa-s3)
 
 ## ✨ Features
 
@@ -19,7 +23,7 @@ Using CLI tools for S3-compatible storage can be very hard to use, especially fo
 ## 🗺️ Roadmap
 
 ### Phase 1: CLI
-- [ ] Implement basic configuration system
+- [X] Implement basic configuration system
 - [ ] Add core commands: ls, cp and rm
 
 ### Phase 2: TUI
@@ -28,9 +32,10 @@ Using CLI tools for S3-compatible storage can be very hard to use, especially fo
 - [ ] Conditional launch
 - [ ] Connect S3 logics
 
-### Phase 3: Avanced features
+### Phase 3: Advanced features
 - [ ] Configure Forgejo actions in Codeberg for package distribution
 - [ ] Complete the wiki for documentation
+- [ ] Multi-profiles configuration
 - [ ] Transfer and parallelism
 - [ ] Expand CLI
 - [ ] Enhance TUI
