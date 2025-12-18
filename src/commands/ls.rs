@@ -1,0 +1,73 @@
+// SPDX-License-Identifier: MIT OR Apache-2.0
+
+use aws_sdk_s3::Client;
+
+pub async fn run_ls(
+    client: &Client,
+    bucket: Option<String>,
+) -> Result<(), Box<dyn std::error::Error>> {
+    match bucket {
+        Some(bucket_name) => {
+            println!("Listing objects in bucket: {}", bucket_name);
+
+            match client.list_objects_v2().bucket(&bucket_name).send().await {
+                Ok(output) => {
+                    if let Some(contents) = output.contents {
+                        if contents.is_empty() {
+                            println!("No objects found in bucket '{}'.", bucket_name);
+                        } else {
+                            println!("Objects in '{}':", bucket_name);
+
+                            for object in contents {
+                                println!("  - {}", object.key.unwrap_or_else(|| "N/A".to_string()));
+                            }
+                        }
+                    } else {
+                        println!("No objects found in bucket '{}'.", bucket_name);
+                    }
+                }
+
+                Err(e) => {
+                    eprintln!(
+                        "Error: Could not list objects in bucket '{}': {}",
+                        bucket_name, e
+                    );
+
+                    std::process::exit(1);
+                }
+            }
+        }
+
+        None => {
+            println!("Listing S3 buckets...");
+
+            match client.list_buckets().send().await {
+                Ok(output) => {
+                    if let Some(buckets) = output.buckets {
+                        if buckets.is_empty() {
+                            println!("No S3 buckets found.");
+                        } else {
+                            println!("S3 Buckets:");
+
+                            for bucket in buckets {
+                                println!(
+                                    "  - {}",
+                                    bucket.name.unwrap_or_else(|| "N/A".to_string())
+                                );
+                            }
+                        }
+                    } else {
+                        println!("No S3 buckets found.");
+                    }
+                }
+
+                Err(e) => {
+                    eprintln!("Error: Could not list S3 buckets: {}", e);
+                    std::process::exit(1);
+                }
+            }
+        }
+    }
+
+    Ok(())
+}
