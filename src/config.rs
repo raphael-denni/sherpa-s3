@@ -1,17 +1,37 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
+//! # Configuration management for sherpa-s3.
+//! This module handles loading, saving, and managing the configuration
+//! file that contains S3 credentials and settings.
+//!
+//! The configuration file is stored in the user's configuration directory
+//! under a subdirectory named `sherpa-s3`.
+
 use aws_sdk_s3::{config::Credentials, config::Region};
 use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
 use tracing::info;
 
+/// # Configuration Structure
+/// Represents the configuration settings for S3 access.
+///
+/// Fields:
+/// - `access_key_id`: The AWS access key ID.
+/// - `secret_access_key`: The AWS secret access key.
+/// - `region`: The AWS region.
+/// - `endpoint_url`: An optional custom endpoint URL for S3-compatible services.
+///
+/// Derives:
+/// - `Debug`: For formatting the configuration for debugging purposes.
+/// - `Deserialize`: For deserializing the configuration from TOML format.
+/// - `Serialize`: For serializing the configuration to TOML format.
 #[derive(Debug, Deserialize, Serialize)]
-struct Config {
-    access_key_id: String,
-    secret_access_key: String,
-    region: String,
-    endpoint_url: Option<String>,
+pub struct Config {
+    pub access_key_id: String,
+    pub secret_access_key: String,
+    pub region: String,
+    pub endpoint_url: Option<String>,
 }
 
 fn get_config_path() -> Result<PathBuf, Box<dyn std::error::Error>> {
@@ -45,6 +65,14 @@ fn save_config(config: &Config) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+/// # Handle Configuration
+/// Handles loading the configuration file, creating a default one if it doesn't exist,
+/// and setting up the AWS S3 configuration.
+///
+/// # Errors
+/// Returns an error if there are issues loading or saving the configuration file.
+///
+/// Ok(aws_sdk_s3::Config) - The configured AWS S3 configuration object.
 pub fn handle_config() -> Result<aws_sdk_s3::Config, Box<dyn std::error::Error>> {
     let config = match load_config() {
         Ok(config) => {
@@ -68,7 +96,7 @@ pub fn handle_config() -> Result<aws_sdk_s3::Config, Box<dyn std::error::Error>>
                     save_err
                 );
 
-                std::process::exit(1);
+                return Err(save_err.into());
             }
 
             println!("Default configuration file created at the standard location.");
@@ -84,7 +112,7 @@ pub fn handle_config() -> Result<aws_sdk_s3::Config, Box<dyn std::error::Error>>
 
         Err(e) => {
             eprintln!("Fatal: Error loading configuration: {}", e);
-            std::process::exit(1);
+            return Err(e);
         }
     };
 

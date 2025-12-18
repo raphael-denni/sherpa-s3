@@ -1,7 +1,19 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
+//! # 'ls' Command for sherpa-s3 CLI.
+//! This module implements the 'ls' command for the sherpa-s3 CLI application.
+
 use aws_sdk_s3::Client;
 
+/// # Run 'ls' Command
+/// This function lists S3 buckets or objects within a specified bucket.
+///
+/// # Arguments
+/// - `client`: An instance of the AWS S3 client.
+/// - `bucket`: An optional bucket name. If provided, lists objects in that bucket; otherwise, lists all buckets.
+///
+/// # Errors
+/// Returns an error if there are issues listing buckets or objects.
 pub async fn run_ls(
     client: &Client,
     bucket: Option<String>,
@@ -33,7 +45,7 @@ pub async fn run_ls(
                         bucket_name, e
                     );
 
-                    std::process::exit(1);
+                    return Err(e.into());
                 }
             }
         }
@@ -63,7 +75,7 @@ pub async fn run_ls(
 
                 Err(e) => {
                     eprintln!("Error: Could not list S3 buckets: {}", e);
-                    std::process::exit(1);
+                    return Err(e.into());
                 }
             }
         }
