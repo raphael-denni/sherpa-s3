@@ -7,6 +7,8 @@ use aws_sdk_s3::{Client, primitives::ByteStream};
 use tokio::fs::File;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
+// Parses an S3 path in the format "s3://bucket/key" into a tuple of (bucket, key).
+// Returns an error if the path is not valid.
 fn parse_s3_path(path: &str) -> Result<(&str, &str), &'static str> {
     let path = path
         .strip_prefix("s3://")

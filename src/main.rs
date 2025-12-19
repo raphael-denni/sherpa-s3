@@ -1,5 +1,10 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
+//! # sherpa-s3 CLI Application
+//! This is the main entry point for the sherpa-s3 CLI application.
+//! It initializes the AWS S3 client, handles configuration,
+//! and dispatches commands based on user input.
+
 use aws_sdk_s3::Client;
 use clap::Parser;
 use tracing::info;
@@ -7,6 +12,7 @@ use tracing::info;
 mod commands;
 mod config;
 
+// The main entry point for the sherpa-s3 CLI application.
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt::init();

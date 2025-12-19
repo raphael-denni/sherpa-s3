@@ -16,13 +16,13 @@ use tracing::info;
 /// # Configuration Structure
 /// Represents the configuration settings for S3 access.
 ///
-/// Fields:
+/// # Fields
 /// - `access_key_id`: The AWS access key ID.
 /// - `secret_access_key`: The AWS secret access key.
 /// - `region`: The AWS region.
 /// - `endpoint_url`: An optional custom endpoint URL for S3-compatible services.
 ///
-/// Derives:
+/// # Derives
 /// - `Debug`: For formatting the configuration for debugging purposes.
 /// - `Deserialize`: For deserializing the configuration from TOML format.
 /// - `Serialize`: For serializing the configuration to TOML format.
@@ -34,6 +34,8 @@ pub struct Config {
     pub endpoint_url: Option<String>,
 }
 
+// Determines the platform-specific configuration file path and ensures the directory exists.
+// Returns a PathBuf to the configuration file.
 fn get_config_path() -> Result<PathBuf, Box<dyn std::error::Error>> {
     let config_dir = dirs::config_dir().ok_or("Could not find config directory")?;
     let app_config_dir = config_dir.join("sherpa-s3");
@@ -43,6 +45,8 @@ fn get_config_path() -> Result<PathBuf, Box<dyn std::error::Error>> {
     Ok(app_config_dir.join("config.toml"))
 }
 
+// Read and deserialize the TOML configuration file into a Config struct.
+// Return an error if the file does not exist or cannot be read/parsed.
 fn load_config() -> Result<Config, Box<dyn std::error::Error>> {
     let config_path = get_config_path()?;
 
@@ -56,6 +60,8 @@ fn load_config() -> Result<Config, Box<dyn std::error::Error>> {
     Ok(config)
 }
 
+// Saves the Config struct to the TOML configuration file.
+// Returns an error if the file cannot be written.
 fn save_config(config: &Config) -> Result<(), Box<dyn std::error::Error>> {
     let config_path = get_config_path()?;
     let content = toml::to_string_pretty(config)?;

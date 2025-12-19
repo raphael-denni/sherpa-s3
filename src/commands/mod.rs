@@ -10,7 +10,8 @@ pub mod ls;
 use clap::Parser;
 
 /// # CLI Commands for sherpa-s3
-/// Commands:
+///
+/// # Commands
 /// - `ls [bucket]`: List objects in a bucket or list all buckets if no bucket is specified.
 /// - `cp` `<source>` `<destination>`: Copy an object from source to destination.
 /// - `rm`: Remove an object (not yet implemented).
@@ -37,7 +38,7 @@ pub enum Commands {
 /// This struct defines the CLI for sherpa-s3 using clap.
 /// It includes subcommands for listing, copying, and removing S3 objects.
 ///
-/// Fields:
+/// # Fields
 /// - `commands`: The subcommands available in the CLI.
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
