@@ -44,8 +44,13 @@ async fn main() {
             }
         }
 
-        commands::Commands::Rm => {
+        commands::Commands::Rm { bucket, s3_object } => {
             info!("'rm' command called");
+
+            if let Err(e) = commands::rm::run_rm(&client, bucket, s3_object.clone()).await {
+                eprintln!("Error executing rm command: {}", e);
+                std::process::exit(1);
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ Using CLI tools for S3-compatible storage can be very hard to use, especially fo
 - [X] Implement basic configuration system
 - [X] Add core command: `ls`
 - [X] Add core command: `cp`
-- [ ] Add core command: `rm`
+- [X] Add core command: `rm`
 
 ### Phase 2: TUI
 - [ ] Panes for buckets, objects, etc.

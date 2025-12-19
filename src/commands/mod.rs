@@ -7,6 +7,7 @@
 
 pub mod cp;
 pub mod ls;
+pub mod rm;
 use clap::Parser;
 
 /// # CLI Commands for sherpa-s3
@@ -30,8 +31,13 @@ pub enum Commands {
         /// The destination S3 object URI
         destination: String,
     },
-    /// Remove object
-    Rm,
+    /// Remove a bucket or object from S3 storage
+    Rm {
+        /// The bucket name
+        bucket: String,
+        /// The object key (optional)
+        s3_object: Option<String>,
+    },
 }
 
 /// # Command Line Interface for sherpa-s3
