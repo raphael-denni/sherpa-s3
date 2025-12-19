@@ -26,8 +26,16 @@ async fn main() {
             }
         }
 
-        commands::Commands::Cp => {
+        commands::Commands::Cp {
+            source,
+            destination,
+        } => {
             info!("'cp' command called");
+
+            if let Err(e) = commands::cp::run_cp(&client, source, destination).await {
+                eprintln!("Error executing cp command: {}", e);
+                std::process::exit(1);
+            }
         }
 
         commands::Commands::Rm => {

@@ -72,6 +72,7 @@ fn save_config(config: &Config) -> Result<(), Box<dyn std::error::Error>> {
 /// # Errors
 /// Returns an error if there are issues loading or saving the configuration file.
 ///
+/// # Returns
 /// Ok(aws_sdk_s3::Config) - The configured AWS S3 configuration object.
 pub fn handle_config() -> Result<aws_sdk_s3::Config, Box<dyn std::error::Error>> {
     let config = match load_config() {
